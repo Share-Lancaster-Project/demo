@@ -161,7 +161,7 @@ const App = () => {
             <TouchableOpacity onPress={() => navigation.navigate('AddAnItemToListScreen')}>
             <View style={{ paddingRight: 100 }}>
             <Icon name='add' type='ionicon' size={30} />
-            </View>
+            </View> 
             </TouchableOpacity>
             
             <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
