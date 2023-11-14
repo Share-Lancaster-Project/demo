@@ -1,6 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { FIREBASE_AUTH } from "../firebaseConfig";
 
 const SignOutScreen = () => {
   const navigation = useNavigation();
@@ -8,9 +9,9 @@ const SignOutScreen = () => {
   const handleSignOut = () => {
     // Perform sign-out logic (e.g., clear user session, navigate to login screen)
     // ...
-
+    FIREBASE_AUTH.signOut();
     // For example, navigate to the login screen after signing out
-    navigation.navigate('LoginScreen');
+    navigation.navigate("LoginScreen");
   };
 
   return (
@@ -24,15 +25,15 @@ const SignOutScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   title: {
     fontSize: 28,
     marginBottom: 20,
-    textAlign: 'center',
-    marginTop: -190
+    textAlign: "center",
+    marginTop: -190,
   },
 });
 
