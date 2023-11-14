@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "184493391147",
+    "firebase_url": "https://share-8a1d0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "share-8a1d0",
+    "storage_bucket": "share-8a1d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184493391147:android:29879d679b8e58b3e5596e",
+        "android_client_info": {
+          "package_name": "com.SHARE.LentItems"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi8DVi7KPQbDOd-9xXq-ReXgzj-VN8oyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
