@@ -1,42 +1,62 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { getDatabase, ref, child, get } from "firebase/database";
+import { FIREBASE_AUTH } from "../firebaseConfig";
 
 const ItemsAvailableScreen = () => {
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [itemData, setItemsData] = useState([]);
   // Sample data for items
   const itemsData = [
-    {
-      id: '1',
-      name: 'Item 1',
-      description: 'Description for Item 1',
-      imageUrl: 'https://example.com/item1.jpg',
-      price: '$10.99',
-    },
-    {
-      id: '2',
-      name: 'Item 2',
-      description: 'Description for Item 2',
-      imageUrl: 'https://example.com/item2.jpg',
-      price: '$8.99',
-    },
-    {
-      id: '3',
-      name: 'Item 3',
-      description: 'Description for Item 1',
-      imageUrl: 'https://example.com/item1.jpg',
-      price: '$10.99',
-    },
     // Add more items as needed
   ];
 
+  React.useEffect(() => {
+    const dbRef = ref(getDatabase());
+    const auth = FIREBASE_AUTH;
+    get(child(dbRef, `users/${auth.currentUser.uid}/itemsToBorrow/`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(snapshot.val())
+          setItems(snapshot.val());
+          // arr = snapshot.val();
+          // arr.push(snapshot.val());
+          Object.keys(items).forEach((key) => {
+            // items.push({})
+            itemsData.push(items[key]);
+            // r.pus
+          });
+          console.log(itemsData);
+          setItemsData(itemsData);
+          // console.log(items);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+  // const keys = Object.keys(arr);
+  // keys.forEach((key, index) => {
+  //   console.log(`${items[key]}`);
+  // });
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.itemContainer}
       onPress={() => {
         // Navigate to ItemDetailsScreen with item details as parameters
-        navigation.navigate('ItemDetailsScreen', {
-          itemId: item.id,
+        navigation.navigate("ItemDetailsScreen", {
+          // itemId: item.id,
           itemName: item.name,
           itemDescription: item.description,
           itemPrice: item.price,
@@ -54,9 +74,13 @@ const ItemsAvailableScreen = () => {
 
   return (
     <View style={styles.container}>
-    <FlatList data={itemsData} keyExtractor={(item) => item.id} renderItem={renderItem} />
-  </View>
-);
+      <FlatList
+        data={itemData}
+        // keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -64,17 +88,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginTop: 1,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 8,
     padding: 8,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   itemImage: {
     width: 80,
@@ -87,16 +111,16 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   itemDescription: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
   },
   itemPrice: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'green',
+    fontWeight: "bold",
+    color: "green",
   },
 });
 

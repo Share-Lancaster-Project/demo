@@ -6,7 +6,7 @@ const ItemsListScreen = () => {
   const itemsData = [
     {
       id: '1',
-      name: 'Item 1',
+      name: 'Item 10',
       description: 'Description for Item 1',
       imageUrl: 'https://example.com/item1.jpg',
       price: '$10.99',

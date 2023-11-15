@@ -1,0 +1,403 @@
+{
+	"info": {
+		"_postman_id": "8f3d0842-122f-4bc3-b8dc-5129422e871d",
+		"name": "SHARE App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12342439"
+	},
+	"item": [
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const token = pm.response.headers.get('x-auth-token');",
+									"pm.collectionVariables.set('shareAppJWT', token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"john\",\n    \"password\": \"abc123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/user-service/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"abc123\",\n    \"newPassword\": \"abcd1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/user-service/auth/changePassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"huzaifahtariq08@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/user-service/auth/resetPassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Test\",\n    \"email\": \"john@gmail.com\",\n    \"username\": \"john\",\n    \"password\": \"abc123\",\n    \"location\": \"BaseCamp\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/user-service/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:3000/user-service/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update My User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"BC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/user-service/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Service",
+			"item": [
+				{
+					"name": "Add Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cardNumber\": \"1234567890123456\",\n  \"cardHolderName\": \"John Test\",\n  \"expirationDate\": \"12/23\",\n  \"cvv\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/payment-service/paymentMethod"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Payment Method",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:3001/payment-service/paymentMethod"
+					},
+					"response": []
+				},
+				{
+					"name": "Update My Payment Method",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cvv\": \"456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/payment-service/paymentMethod"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Payment Method",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:3001/payment-service/paymentMethod"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Escrow Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requestId\": \"abcde\",\n  \"lenderId\": \"AOufRjz3fOXX5IihTutY\",\n  \"borrowerId\": \"jocfMykrziWGYBUlL3bp\",\n  \"amount\": 500.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/payment-service/escrowTransaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Escrow Transaction Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"Refunded\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/payment-service/escrowTransaction/kUE7XtA5fYYd6y57PvPt"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification Service",
+			"item": [
+				{
+					"name": "Reset Password Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n    \"email\": \"huzaifahtariq08@gmail.com\",\n    \"username\": \"huzaifah\"\n    },\n    \"generatedPassword\": \"test123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3002/notification-service/resetPassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Borrowing Request Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lenderEmail\": \"huzaifahtariq08@gmail.com\",\n    \"lenderName\": \"huzaifah\",\n    \"borrowerName\": \"kashif\",\n    \"itemName\": \"test123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3002/notification-service/borrowingRequest"
+					},
+					"response": []
+				},
+				{
+					"name": "Due Date Approaching Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"borrowerEmail\": \"huzaifahtariq08@gmail.com\",\n    \"borrowerName\": \"kashif\",\n    \"itemName\": \"test123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3002/notification-service/dueDateApproaching"
+					},
+					"response": []
+				},
+				{
+					"name": "Damage Claim Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{shareAppJWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"borrowerEmail\": \"huzaifahtariq08@gmail.com\",\n    \"borrowerName\": \"kashif\",\n    \"lenderName\": \"huzaifah\",\n    \"itemName\": \"test123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3002/notification-service/damageClaim"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "shareAppJWT",
+			"value": "null",
+			"type": "string"
+		}
+	]
+}
