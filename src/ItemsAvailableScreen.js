@@ -35,7 +35,7 @@ const ItemsAvailableScreen = () => {
             itemsData.push(items[key]);
             // r.pus
           });
-          console.log(itemsData);
+          // console.log(itemsData);
           setItemsData(itemsData);
           // console.log(items);
         } else {
@@ -45,7 +45,7 @@ const ItemsAvailableScreen = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [items]);
   // const keys = Object.keys(arr);
   // keys.forEach((key, index) => {
   //   console.log(`${items[key]}`);
