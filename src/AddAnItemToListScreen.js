@@ -1,8 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { FIREBASE_AUTH } from "../firebaseConfig";
+import DateTimePicker from "@react-native-community/datetimepicker";
+// import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 const AddAnItemToListScreen = () => {
   // page to add item to the list of items user is willing to lend/let users borrow
@@ -13,7 +22,36 @@ const AddAnItemToListScreen = () => {
   const [itemDescription, setItemDescription] = useState("");
   const [itemPrice, setItemPrice] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [borrowDate, setBorrowDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [showBorrowDatePicker, setShowBorrowDatePicker] = useState(false);
+  const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
+  const [duration, setDuration] = useState();
 
+  const handleBorrowDateChange = (event, date) => {
+    setShowBorrowDatePicker(false);
+    if (date && date >= new Date()) {
+      setBorrowDate(date);
+    }
+  };
+
+  // Function to handle date selection for return date
+  const handleReturnDateChange = (event, date) => {
+    setShowReturnDatePicker(false);
+    if (date && date >= borrowDate && date >= new Date()) {
+      setReturnDate(date);
+      setDuration(
+        Math.floor(
+          (returnDate.getTime() - borrowDate.getTime()) / (1000 * 3600 * 24)
+        )
+      );
+      console.log(duration);
+    } else {
+      alert(
+        "Invalid Return Date. Please select a date after the Borrow Date and not in the past."
+      );
+    }
+  };
   const handleAddItem = (async = (
     userId,
     itemName,
@@ -30,10 +68,14 @@ const AddAnItemToListScreen = () => {
         name: itemName,
         description: itemDescription,
         price: itemPrice,
+        duration: duration,
+        status: "available",
+
         // profile_picture: imageUrl,
       }).then((snapshot) => {
         ref.child(snapshot.key).update({ id: snapshot.key });
       });
+      navigation.navigate("TabScreen");
     } catch (err) {
       alert(err);
     }
@@ -91,6 +133,40 @@ const AddAnItemToListScreen = () => {
         onChangeText={setItemPrice}
         keyboardType="numeric"
       />
+      <TouchableOpacity onPress={() => setShowBorrowDatePicker(true)}>
+        <Text style={styles.datePickerText}>Select Lend Date</Text>
+      </TouchableOpacity>
+      {showBorrowDatePicker && (
+        <DateTimePicker
+          value={borrowDate}
+          mode="date"
+          display="default"
+          onChange={handleBorrowDateChange}
+          minimumDate={new Date()}
+        />
+      )}
+
+      <TouchableOpacity onPress={() => setShowReturnDatePicker(true)}>
+        <Text style={styles.datePickerText}>Select Return Date</Text>
+      </TouchableOpacity>
+
+      {showReturnDatePicker && (
+        <DateTimePicker
+          value={returnDate}
+          mode="date"
+          display="default"
+          onChange={handleReturnDateChange}
+          minimumDate={new Date()}
+        />
+      )}
+
+      <Text style={styles.detail}>
+        Selected Lend Date: {borrowDate.toDateString()}
+      </Text>
+      <Text style={styles.detail}>
+        Selected Return Date: {returnDate.toDateString()}
+      </Text>
+
       <Button
         title="Add Item"
         onPress={() =>
@@ -128,6 +204,16 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 5,
     marginVertical: 10,
+  },
+  datePickerText: {
+    fontSize: 18,
+    color: "blue",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  datePicker: {
+    width: 200,
+    alignSelf: "center",
   },
 });
 
